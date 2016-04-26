@@ -1,0 +1,30 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.2",
+  "parameters": {
+    "vmIPPublicDnsName": {
+      "value": "rbdev"
+    },
+    "storageType": {
+      "value": "Premium_LRS"
+    },
+    "deployLocation": {
+      "value": "West US"
+    },
+    "vmNamePrefix": {
+      "value": "rbdev"
+    },
+    "vmAdminUserName": {
+      "value": ""
+    },
+    "vmAdminPassword": {
+      "value": ""
+    },
+    "vmSize": {
+      "value": "Standard_DS2"
+    },
+    "vmVisualStudioVersion": {
+      "value": "VS-2015-Ent-VSU2-AzureSDK-29-WS2012R2"
+    }
+  }
+}
