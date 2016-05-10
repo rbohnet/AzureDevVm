@@ -1,0 +1,7 @@
+TODO
+-------
+* Add Data disk
+* Add DSC to configure IIS, install chocolatey or Boxstarter
+* Add scripts to delete VM and re-attach to existing 
+* Automate configuration as much asp
+* Add SQL Server 2012 developer

@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.2",
   "parameters": {
     "vmIPPublicDnsName": {
-      "value": ""
+      "value": "rbdev"
     },
     "storageType": {
       "value": "Premium_LRS"
@@ -12,22 +12,10 @@
       "value": "West US"
     },
     "vmNamePrefix": {
-      "value": ""
-    },
-    "vmAdminUserName": {
-      "value": ""
-    },
-    "vmAdminPassword": {
-      "value": ""
+      "value": "rbdev"
     },
     "vmSize": {
       "value": "Standard_DS2"
-    },
-    "vmVisualStudioVersion": {
-      "value": "VS-2015-Ent-VSU2-AzureSDK-29-WS2012R2"
-    },
-    "_artifactsLocation": {
-      "value": ""
     }
   }
 }

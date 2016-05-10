@@ -32,10 +32,8 @@ if ($UploadArtifacts) {
     $DSCSourceFolder = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolder))
 
     Set-Variable ArtifactsLocationName '_artifactsLocation' -Option ReadOnly -Force
-    Set-Variable ArtifactsLocationSasTokenName '_artifactsLocationSasToken' -Option ReadOnly -Force
 
     $OptionalParameters.Add($ArtifactsLocationName, $null)
-    $OptionalParameters.Add($ArtifactsLocationSasTokenName, $null)
 
     # Parse the parameter file and update the values of artifacts location and artifacts location SAS token if they are present
     $JsonContent = Get-Content $TemplateParametersFile -Raw | ConvertFrom-Json
@@ -51,7 +49,7 @@ if ($UploadArtifacts) {
     $JsonParameters | Get-Member -Type NoteProperty | ForEach-Object {
         $ParameterValue = $JsonParameters | Select-Object -ExpandProperty $_.Name
 
-        if ($_.Name -eq $ArtifactsLocationName -or $_.Name -eq $ArtifactsLocationSasTokenName) {
+        if ($_.Name -eq $ArtifactsLocationName) {
             $OptionalParameters[$_.Name] = $ParameterValue.value
         }
     }
@@ -74,21 +72,12 @@ if ($UploadArtifacts) {
     }
 
     # Copy files from the local storage staging location to the storage account container
-    New-AzureStorageContainer -Name $StorageContainerName -Context $StorageAccountContext -Permission Container -ErrorAction SilentlyContinue *>&1
+    New-AzureStorageContainer -Name $StorageContainerName -Context $StorageAccountContext -Permission Blob -ErrorAction SilentlyContinue *>&1
 
     $ArtifactFilePaths = Get-ChildItem $ArtifactStagingDirectory -Recurse -File | ForEach-Object -Process {$_.FullName}
     foreach ($SourcePath in $ArtifactFilePaths) {
         $BlobName = $SourcePath.Substring($ArtifactStagingDirectory.length + 1)
         Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerName -Context $StorageAccountContext -Force
-    }
-
-    # Generate the value for artifacts location SAS token if it is not provided in the parameter file
-    $ArtifactsLocationSasToken = $OptionalParameters[$ArtifactsLocationSasTokenName]
-    if ($ArtifactsLocationSasToken -eq $null) {
-        # Create a SAS token for the storage container - this gives temporary read-only access to the container
-        $ArtifactsLocationSasToken = New-AzureStorageContainerSASToken -Container $StorageContainerName -Context $StorageAccountContext -Permission r -ExpiryTime (Get-Date).AddHours(4)
-        $ArtifactsLocationSasToken = ConvertTo-SecureString $ArtifactsLocationSasToken -AsPlainText -Force
-        $OptionalParameters[$ArtifactsLocationSasTokenName] = $ArtifactsLocationSasToken
     }
 }
 
