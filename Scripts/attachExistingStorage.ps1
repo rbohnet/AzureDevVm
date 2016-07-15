@@ -1,5 +1,5 @@
-#Login-AzureRmAccount
-#Select-AzureSubscription -SubscriptionName 'Visual Studio Premium with MSDN' -Current
+Login-AzureRmAccount
+Select-AzureSubscription -SubscriptionName 'Visual Studio Premium with MSDN' -Current
 
 .\Deploy-AzureResourceGroup.ps1 `
      -StorageAccountName 'shareduswsa' `
